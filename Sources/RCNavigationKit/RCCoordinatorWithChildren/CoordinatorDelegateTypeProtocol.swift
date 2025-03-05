@@ -13,7 +13,7 @@ class WeakObjectWrapper<T: AnyObject> {
     }
 }
 
-public protocol CoordinatorDelegateTypeProtocol: AnyObject {
+public protocol CoordinatorDelegateTypeProtocol: AnyObject, Parentable {
     associatedtype CoordinatorDelegateType
 }
 
@@ -21,7 +21,7 @@ public protocol CoordinatorDelegateTypeProtocol: AnyObject {
 private var parentKey: UInt8 = 0
 
 extension CoordinatorDelegateTypeProtocol where CoordinatorDelegateType: AnyObject {
-    internal var _parent: CoordinatorDelegateType? {
+    var _parent: CoordinatorDelegateType? {
         get {
             let wrapper = objc_getAssociatedObject(self, &parentKey) as? WeakObjectWrapper<CoordinatorDelegateType>
             return wrapper?.value

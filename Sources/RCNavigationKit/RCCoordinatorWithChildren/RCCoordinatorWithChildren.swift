@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-
-public protocol RCCoordinatorWithChildren: RCCoordinator {
-    var childCoordinators: [RCCoordinatorWithChildren] { get set }
+public protocol Parentable {
     var parent: RCCoordinatorDelegate? { get set }
+}
+
+public protocol RCCoordinatorWithChildren: RCCoordinator, Parentable {
+    var childCoordinators: [RCCoordinatorWithChildren] { get set }
 
     init(navigationController: UINavigationController)
 //    func start(popUpTo identifier: String?)
@@ -46,7 +48,7 @@ public extension RCCoordinatorWithChildren {
             assertionFailure("Coordinator should conform to respective NavDelegate for the ChildCoordinator")
             return
         }
-
+        var childCoordinator = childCoordinator
         childCoordinator.parent = parent
         childCoordinators.append(childCoordinator)
     }
